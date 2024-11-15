@@ -70,6 +70,49 @@
         <p>Located in Jerry's Garage, Sioux Bar is a tribute to the history and legacy of the University of North Dakota. Come enjoy a drink, and soak in the UND spirit with friends!</p>
         <p>Follow us on <a href="https://www.instagram.com/siouxbar" target="_blank">Instagram</a> to stay updated!</p>
     </div>
+<div class="content">
+    <h2>Request a Song</h2>
+    <form id="songForm">
+        <label for="song">Song Title:</label>
+        <input type="text" id="song" name="song" required><br><br>
+        
+        <label for="artist">Artist:</label>
+        <input type="text" id="artist" name="artist" required><br><br>
+
+        <label for="pin">4-Digit PIN:</label>
+        <input type="password" id="pin" name="pin" maxlength="4" required><br><br>
+        
+        <button type="submit">Add to Queue</button>
+    </form>
+    <p id="responseMessage"></p>
+</div>
+
+<script>
+document.getElementById('songForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    
+    const song = document.getElementById('song').value;
+    const artist = document.getElementById('artist').value;
+    const pin = document.getElementById('pin').value;
+
+    const apiUrl = 'https://siouxbar-backend.vercel.app/queue-song';
+
+    
+    try {
+        const response = await fetch('/queue-song', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ song, artist, pin }),
+        });
+        
+        const data = await response.json();
+        document.getElementById('responseMessage').innerText = data.message;
+    } catch (error) {
+        document.getElementById('responseMessage').innerText = 'Error adding song to queue.';
+    }
+});
+</script>
+
     <footer>&copy; 2024 Sioux Bar - UND Themed Garage Bar</footer>
 </body>
 </html>
